@@ -13,14 +13,11 @@
      See the License for the specific language governing permissions and
      limitations under the License.
  */
-#ifdef SPINNAKER
+#ifdef UEYE
 
 #include "spinnakerdriver.h"
 
-#define CATCH_SPINNAKER(f) try { f; } catch (Spinnaker::Exception &e) { WARN("Could not set parameter: " << e.GetFullErrorMessage()); }
-
-
-class SpinnakerImage : public RawImage {
+class UeyeDriver : public CameraDriver {
 public:
 	SpinnakerImage(SpinnakerDriver& source, const Spinnaker::ImagePtr& pImage): RawImage(*source.borrow(pImage)), source(source), pImage(pImage) {
 		timestamp = (double)pImage->GetTimeStamp() / 1e9;
@@ -32,7 +29,7 @@ public:
 	}
 
 private:
-	SpinnakerDriver& source;
+	UeyeDriver& source;
 	const Spinnaker::ImagePtr pImage;
 };
 

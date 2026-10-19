@@ -38,7 +38,7 @@ find_package(mvIMPACT)
 find_package(OpenCL REQUIRED)
 find_package(OpenCV REQUIRED COMPONENTS core imgproc imgcodecs videoio)
 find_package(Spinnaker)
-find_package(uEye)
+find_package(UEye)
 find_package(yaml-cpp REQUIRED)
 
 # Protobuf links to Abseil starting with 4.22.0. The FindProtobuf module does

@@ -17,7 +17,7 @@
 #ifdef UEYE
 
 #include "cameradriver.h"
-#include "Spinnaker.h"
+#include "peak.hpp"
 
 class UeyeDriver : public CameraDriver {
 public:
