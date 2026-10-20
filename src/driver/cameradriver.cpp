@@ -22,6 +22,9 @@
 #ifdef MVIMPACT
 #include "driver/mvimpactdriver.h"
 #endif
+#ifdef IDS_PEAK
+#include "driver/idspeakdriver.h"
+#endif
 
 #include <yaml-cpp/yaml.h>
 
@@ -84,6 +87,11 @@ std::unique_ptr<CameraDriver> openCamera(const CameraConfig& config) {
 #ifdef MVIMPACT
 	if(config.driverType == "MVIMPACT")
 		return std::make_unique<MVImpactDriver>(config);
+#endif
+
+#ifdef IDS_PEAK
+    if(config.driverType == "IDS_PEAK")
+		return std::make_unique<IdsPeakDriver>(config);
 #endif
 
 	if(config.driverType == "OPENCV")

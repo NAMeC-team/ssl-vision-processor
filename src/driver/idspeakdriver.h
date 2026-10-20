@@ -14,15 +14,15 @@
      limitations under the License.
  */
 #pragma once
-#ifdef UEYE
+#ifdef IDS_PEAK
 
+#include <peak/peak.hpp>
 #include "cameradriver.h"
-#include "peak.hpp"
 
-class UeyeDriver : public CameraDriver {
+class IdsPeakDriver : public CameraDriver {
 public:
-	explicit UeyeDriver(const CameraConfig& config);
-	~UeyeDriver() override;
+	explicit IdsPeakDriver(const CameraConfig& config);
+	~IdsPeakDriver() override;
 
 	std::shared_ptr<RawImage> readImage() override;
 
@@ -30,14 +30,10 @@ public:
 
 	double expectedFrametime() override;
 
-	std::shared_ptr<RawImage> borrow(const Spinnaker::ImagePtr& pImage);
-	void restore(const RawImage& image);
-
-private:
-	Spinnaker::SystemPtr pSystem;
-	Spinnaker::CameraPtr pCam;
-
-	std::map<std::shared_ptr<RawImage>, std::unique_ptr<CLMap<uint8_t>>> buffers; // Use own image buffers for page size alignment (OpenCL pinned memory and zero copy)
+// private:
+//   cv::VideoCapture capture;
+//   std::shared_ptr<RawImage> image = nullptr;
+//   std::string name;
 };
 
 #endif
