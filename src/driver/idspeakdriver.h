@@ -30,10 +30,13 @@ public:
 
 	double expectedFrametime() override;
 
-// private:
-//   cv::VideoCapture capture;
-//   std::shared_ptr<RawImage> image = nullptr;
-//   std::string name;
+private:
+	uint8_t _cameraId;
+	peak::DeviceManager& _deviceManager;
+	std::shared_ptr<peak::core::DeviceDescriptor> _deviceDescriptor;
+	std::shared_ptr<peak::core::Device> _device;
+	std::shared_ptr<peak::core::DataStream> _dataStream;
+	std::shared_ptr<peak::core::NodeMap> _nodeMapRemoteDevice;
 };
 
 #endif

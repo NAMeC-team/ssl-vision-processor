@@ -17,7 +17,7 @@ project(vision_processor)
 enable_language(ASM)
 
 option(WITH_SPINNAKER "Build with Spinnaker support (if library available)" ON)
-option(WITH_IDS_PEAK "Build with ids peak support (if library available)" OFF)
+option(WITH_IDS_PEAK "Build with ids peak support (if library available)" ON)
 option(WITH_MVIMPACT "Build with mvIMPACT/Bluefox support (if library available)" ON)
 
 # Adapted from https://stackoverflow.com/a/48832234 CC BY-SA 4.0 by einpoklum
@@ -53,7 +53,7 @@ else()
     message(STATUS "Found Protobuf ${Protobuf_VERSION} via Module mode")
 endif()
 
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_compile_definitions(CL_HPP_TARGET_OPENCL_VERSION=300)
 # m (c math) and stdc++ (c++ standard library) explicitly required by LLD
