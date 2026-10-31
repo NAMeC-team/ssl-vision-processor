@@ -38,7 +38,6 @@ find_package(mvIMPACT)
 find_package(OpenCL REQUIRED)
 find_package(OpenCV REQUIRED COMPONENTS core imgproc imgcodecs videoio)
 find_package(Spinnaker)
-find_package(IdsPeak)
 find_package(yaml-cpp REQUIRED)
 
 # Protobuf links to Abseil starting with 4.22.0. The FindProtobuf module does
@@ -57,8 +56,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_compile_definitions(CL_HPP_TARGET_OPENCL_VERSION=300)
 # m (c math) and stdc++ (c++ standard library) explicitly required by LLD
-link_libraries("m" "stdc++" ${YAML_CPP_LIBRARIES} ${OpenCV_LIBS} PkgConfig::LIBAV ${SPINNAKER_LIBS} ${IDS_PEAK_LIBS} OpenCL::OpenCL protobuf::libprotobuf ${mvIMPACT_LIBS})
-include_directories(SYSTEM ${YAML_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS} ${SPINNAKER_INCLUDE_DIRS} ${IDS_PEAK_INCLUDE_DIR} ${IDS_PEAK_COMMON_INCLUDE_DIR} Eigen3::Eigen ${mvIMPACT_INCLUDE_DIRS})
+link_libraries("m" "stdc++" ${YAML_CPP_LIBRARIES} ${OpenCV_LIBS} PkgConfig::LIBAV ${SPINNAKER_LIBS}  OpenCL::OpenCL protobuf::libprotobuf ${mvIMPACT_LIBS})
+include_directories(SYSTEM ${YAML_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS} ${SPINNAKER_INCLUDE_DIRS}  Eigen3::Eigen ${mvIMPACT_INCLUDE_DIRS} ${IDS_PEAK_INCLUDE_DIR} ${IDS_PEAK_LIB})
 
 include_directories(src)
 
@@ -132,5 +131,36 @@ add_executable("blob_benchmark" ${SRC} "src/blob_benchmark.cpp")
 add_dependencies(${PROJECT_NAME} AUTOGENERATE)
 add_dependencies("geometry_benchmark" AUTOGENERATE)
 add_dependencies("blob_benchmark" AUTOGENERATE)
+
+add_definitions(-DIDS_PEAK)
+find_package(ids_peak REQUIRED)
+find_package (ids_peak_icv REQUIRED)
+include_directories("/opt/ids/ids-peak/include")
+find_package (Threads REQUIRED)
+
+# Link against libraries
+target_link_libraries (${PROJECT_NAME}
+    ids_peak::ids_peak
+    ids_peak_icv::ids_peak_icv
+    ${CMAKE_THREAD_LIBS_INIT}
+)
+
+target_link_libraries ("geometry_benchmark"
+    ids_peak::ids_peak
+    ids_peak_icv::ids_peak_icv
+    ${CMAKE_THREAD_LIBS_INIT}
+)
+
+target_link_libraries ("blob_benchmark"
+    ids_peak::ids_peak
+    ids_peak_icv::ids_peak_icv
+    ${CMAKE_THREAD_LIBS_INIT}
+)
+
+
+# Call deploy functions
+# These functions will add a post-build steps to your target in order to copy all needed files (e.g. DLL's) to the output directory.
+ids_peak_deploy(${PROJECT_NAME})
+ids_peak_icv_deploy(${PROJECT_NAME})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION /usr/local/bin)

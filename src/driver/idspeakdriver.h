@@ -32,7 +32,7 @@ public:
 
 private:
 	uint8_t _cameraId;
-	peak::DeviceManager& _deviceManager;
+	peak::DeviceManager* _deviceManager;
 	std::shared_ptr<peak::core::DeviceDescriptor> _deviceDescriptor;
 	std::shared_ptr<peak::core::Device> _device;
 	std::shared_ptr<peak::core::DataStream> _dataStream;
